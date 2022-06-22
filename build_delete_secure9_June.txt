@@ -26,6 +26,7 @@ ls -l /mnt/storage/backup/db_backup_v3/DELETED_{ifm_654,ntq_staging,secure9_01,v
 
 #/mnt/eg-v3-backup/colddata/に対象のdumpデータが存在することを確認
 ls -lt /mnt/eg-v3-backup/colddata/
+→対象のdumpファイルが存在することを確認
 
 
 ## sshコマンドでsecure9-db-master-stagingサーバーに入る
