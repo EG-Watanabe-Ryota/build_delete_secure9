@@ -1,0 +1,91 @@
+#↓secure9サーバでの作業
+================================================================================
+#/home/v3に移動
+cd /home/v3
+
+#他のアカウントのdatabase.phpで対象のDB名が指定されてないかの確認
+grep v3_ifm_654  ./*/app/Config/database.php
+grep v3_ntq_staging  ./*/app/Config/database.php
+grep v3_secure9_01  ./*/app/Config/database.php
+grep v3_v3_7_0  ./*/app/Config/database.php
+→実行後、何も表示されないことを確認
+
+#対象のdumpデータが存在することを確認
+ls -l /mnt/storage/backup/db_backup_v3/DELETED_{ifm_654,ntq_staging,secure9_01,v3_7_0}/*.tar.gz
+→dumpデータが存在するのとファイル名を確認
+
+#/mnt/eg-v3-backup/colddata/に対象のdumpファイルが存在しないことを確認
+ls -lt /mnt/eg-v3-backup/colddata/
+
+#dumpデータを/mnt/eg-v3-backup/colddata/に複製する
+cp -i /mnt/storage/backup/db_backup_v3/DELETED_{ifm_654,ntq_staging,secure9_01,v3_7_0}/*.tar.gz /mnt/eg-v3-backup/colddata/
+
+#対象のdumpデータが存在することを確認
+ls -l /mnt/storage/backup/db_backup_v3/DELETED_{ifm_654,ntq_staging,secure9_01,v3_7_0}/*.tar.gz
+→dumpデータが存在するのとファイル名を確認
+
+#/mnt/eg-v3-backup/colddata/に対象のdumpデータが存在することを確認
+ls -lt /mnt/eg-v3-backup/colddata/
+
+
+## sshコマンドでsecure9-db-master-stagingサーバーに入る
+ssh master
+================================================================================
+↑ここまで
+
+
+#↓secure9-db-master-stagingでの作業
+================================================================================
+#mysqlにログイン
+mysql --login-path=root
+→mysqlにログインできたことを確認する
+
+#対象アカウントのDBを削除する
+show databases like 'v3_ifm_654';
+
+drop database `v3_ifm_654`;
+
+show databases like 'v3_ifm_654';
+→対象DBが消えたことを確認
+
+
+show databases like 'v3_ntq_staging';
+
+drop database `v3_ntq_staging`;
+
+show databases like 'v3_ntq_staging';
+→対象DBが消えたことを確認
+
+
+show databases like 'v3_secure9_01';
+
+drop database `v3_secure9_01`;
+
+show databases like 'v3_secure9_01';
+→対象DBが消えたことを確認
+
+
+show databases like 'v3_v3_7_0';
+
+drop database `v3_v3_7_0`;
+
+show databases like 'v3_v3_7_0';
+→対象DBが消えたことを確認
+
+#secure9-db-master-stagingからexitする
+exit
+================================================================================
+↑ここまで
+
+#secure9サーバからもexitする
+exit
+
+
+
+
+
+v3_ifm_654
+v3_ntq_staging
+v3_secure9_01
+v3_v3_7_0
+
