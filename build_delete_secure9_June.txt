@@ -1,5 +1,5 @@
-#↓secure9サーバでの作業
-================================================================================
+
+=====================================secure9サーバでの作業===========================================
 #/home/v3に移動
 cd /home/v3
 
@@ -12,70 +12,68 @@ grep v3_v3_7_0  ./*/app/Config/database.php
 
 #対象のdumpデータが存在することを確認
 ls -l /mnt/storage/backup/db_backup_v3/DELETED_{ifm_654,ntq_staging,secure9_01,v3_7_0}/*.tar.gz
-→dumpデータが存在するのとファイル名を確認
+→各アカウントのDumpファイルが存在すること
 
 #/mnt/eg-v3-backup/colddata/に対象のdumpファイルが存在しないことを確認
-ls -lt /mnt/eg-v3-backup/colddata/
-
+ls -lt /mnt/eg-v3-backup/colddata/*{ifm_654,ntq_staging,secure9_01,v3_7_0}*.tar.gz
 #dumpデータを/mnt/eg-v3-backup/colddata/に複製する
 cp -i /mnt/storage/backup/db_backup_v3/DELETED_{ifm_654,ntq_staging,secure9_01,v3_7_0}/*.tar.gz /mnt/eg-v3-backup/colddata/
-
-#対象のdumpデータが存在することを確認
-ls -l /mnt/storage/backup/db_backup_v3/DELETED_{ifm_654,ntq_staging,secure9_01,v3_7_0}/*.tar.gz
-→dumpデータが存在するのとファイル名を確認
-
 #/mnt/eg-v3-backup/colddata/に対象のdumpデータが存在することを確認
-ls -lt /mnt/eg-v3-backup/colddata/
+ls -lt /mnt/eg-v3-backup/colddata/*{ifm_654,ntq_staging,secure9_01,v3_7_0}*.tar.gz
+→対象のdumpファイルが存在することを確認
 
 
 ## sshコマンドでsecure9-db-master-stagingサーバーに入る
 ssh master
-================================================================================
-↑ここまで
+=====================================ここまで===========================================
 
 
-#↓secure9-db-master-stagingでの作業
-================================================================================
+
+
+=====================================secure9-db-master-staging(IP：192.168.10.204)での作業===========================================
+#対象の作業サーバのIP確認
+ip a | grep -i 192.168.10.204
+→192.168.10.204でgrepできることを確認
+
 #mysqlにログイン
 mysql --login-path=root
-→mysqlにログインできたことを確認する
+
+#作業サーバの確認
+select @@hostname
+→secure9-db-master-stagingサーバのmysqlにログインできたことを確認する
 
 #対象アカウントのDBを削除する
 show databases like 'v3_ifm_654';
-
+→対象のDBが存在することを確認
 drop database `v3_ifm_654`;
-
 show databases like 'v3_ifm_654';
-→対象DBが消えたことを確認
+→対象のDBが存在しないことを確認
 
 
 show databases like 'v3_ntq_staging';
-
+→対象のDBが存在することを確認
 drop database `v3_ntq_staging`;
-
 show databases like 'v3_ntq_staging';
-→対象DBが消えたことを確認
+→対象のDBが存在することを確認
 
 
 show databases like 'v3_secure9_01';
-
+→対象のDBが存在することを確認
 drop database `v3_secure9_01`;
-
 show databases like 'v3_secure9_01';
-→対象DBが消えたことを確認
+→対象のDBが存在することを確認
 
 
 show databases like 'v3_v3_7_0';
-
+→対象のDBが存在することを確認
 drop database `v3_v3_7_0`;
-
 show databases like 'v3_v3_7_0';
-→対象DBが消えたことを確認
+→対象のDBが存在することを確認
 
 #secure9-db-master-stagingからexitする
 exit
-================================================================================
-↑ここまで
+=====================================ここまで===========================================
+
 
 #secure9サーバからもexitする
 exit
